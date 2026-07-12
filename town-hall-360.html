@@ -100,7 +100,7 @@
   <script>
     pannellum.viewer('viewer', {
       type: 'equirectangular',
-      panorama: 'town-hall-360.jpg',
+      panorama: 'den-360.jpg',
       autoLoad: true,
       autoRotate: -1.5,
       autoRotateInactivityDelay: 4000,
@@ -108,7 +108,7 @@
       showFullscreenCtrl: true,
       showZoomCtrl: true,
       mouseZoom: true,
-      hfov: 120,
+      hfov: window.innerWidth < 768 ? 100 : 120,
       minHfov: 50,
       maxHfov: 120,
       pitch: 0,
