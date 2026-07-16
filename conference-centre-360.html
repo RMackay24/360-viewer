@@ -10,7 +10,6 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #3F3F3F; }
     #viewer { width: 100%; height: 100%; }
-
     #branding {
       position: fixed;
       bottom: 15px;
@@ -22,20 +21,9 @@
       font-family: "Roboto Bold", Arial, sans-serif;
       font-weight: 400;
       pointer-events: none;
-      border-radius: 0;
     }
-    #branding strong {
-      display: block;
-      font-size: 16px;
-      font-weight: 400;
-      margin-bottom: 2px;
-    }
-    #branding span {
-      font-size: 13px;
-      opacity: 0.65;
-      font-family: "Roboto Regular", Arial, sans-serif;
-    }
-
+    #branding strong { display: block; font-size: 16px; font-weight: 400; margin-bottom: 2px; }
+    #branding span { font-size: 13px; opacity: 0.65; font-family: "Roboto Regular", Arial, sans-serif; }
     #hint {
       position: fixed;
       bottom: 15px;
@@ -50,40 +38,18 @@
       transition: opacity 1s;
       font-family: "Roboto Regular", Arial, sans-serif;
       white-space: nowrap;
-      border-radius: 0;
       opacity: 0.85;
     }
-
-    .pnlm-zoom-in,
-    .pnlm-zoom-out,
-    .pnlm-fullscreen-toggle-button {
+    .pnlm-zoom-in, .pnlm-zoom-out, .pnlm-fullscreen-toggle-button {
       background-color: #00B6EA !important;
       border-radius: 0 !important;
       color: #FFFFFF !important;
     }
-    .pnlm-zoom-in::before,
-    .pnlm-zoom-out::before,
-    .pnlm-fullscreen-toggle-button::before {
-      color: #FFFFFF !important;
-    }
-    .pnlm-zoom-in:hover,
-    .pnlm-zoom-out:hover,
-    .pnlm-fullscreen-toggle-button:hover {
-      background-color: #DE3D95 !important;
-    }
-    .pnlm-load-button {
-      background-color: #3F3F3F !important;
-      border-radius: 0 !important;
-    }
-    .pnlm-load-button p {
-      background-color: #00B6EA !important;
-      border-radius: 0 !important;
-    }
-    .pnlm-load-button:hover p {
-      background-color: #DE3D95 !important;
-    }
-
-    /* Hotspot styling */
+    .pnlm-zoom-in::before, .pnlm-zoom-out::before, .pnlm-fullscreen-toggle-button::before { color: #FFFFFF !important; }
+    .pnlm-zoom-in:hover, .pnlm-zoom-out:hover, .pnlm-fullscreen-toggle-button:hover { background-color: #DE3D95 !important; }
+    .pnlm-load-button { background-color: #3F3F3F !important; border-radius: 0 !important; }
+    .pnlm-load-button p { background-color: #00B6EA !important; border-radius: 0 !important; }
+    .pnlm-load-button:hover p { background-color: #DE3D95 !important; }
     .pnlm-hotspot.pnlm-scene {
       background: #00B6EA;
       border-radius: 0;
@@ -95,12 +61,7 @@
       cursor: pointer;
       transition: background 0.15s ease;
     }
-    .pnlm-hotspot.pnlm-scene:hover {
-      background: #DE3D95;
-    }
-    .pnlm-hotspot-base.pnlm-scene span {
-      display: none;
-    }
+    .pnlm-hotspot.pnlm-scene:hover { background: #DE3D95; }
     .pnlm-tooltip span {
       background: #3F3F3F;
       color: #FFFFFF;
@@ -113,19 +74,14 @@
   </style>
 </head>
 <body>
-
   <div id="branding">
     <strong>Conference Centre</strong>
     <span>SilverStar Mountain Resort · 360° View</span>
   </div>
-
-  <div id="hint">Click the arrows to move through the space</div>
-
+  <div id="hint">Click the blue markers to move through the space</div>
   <div id="viewer"></div>
-
   <script>
     var isMobile = window.innerWidth < 768;
-
     pannellum.viewer('viewer', {
       default: {
         firstScene: 'scene6',
@@ -141,157 +97,70 @@
       },
       scenes: {
 
-        // Scene 1 — Top of stairs (bottom left, foyer level)
         scene1: {
           panorama: 'Conference Centre-1.jpg',
-          pitch: 0,
-          yaw: 0,
+          pitch: -24, yaw: -73,
           hotSpots: [
-            {
-              pitch: 0,
-              yaw: 0,       // placeholder — faces into foyer toward scene 2
-              type: 'scene',
-              sceneId: 'scene2',
-              text: 'Enter foyer',
-            }
+            { pitch: -21, yaw: -67,  type: 'scene', sceneId: 'scene2', text: 'Outside ballroom' },
+            { pitch: -32, yaw: -139, type: 'scene', sceneId: 'scene3', text: 'Stage & dancefloor' },
+            { pitch: -11, yaw: -97,  type: 'scene', sceneId: 'scene6', text: 'Mid ballroom' },
+            { pitch: -9,  yaw: -80,  type: 'scene', sceneId: 'scene4', text: 'Ballroom entrance side' },
           ]
         },
 
-        // Scene 2 — Outside ballroom / foyer
         scene2: {
           panorama: 'Conference Centre-2.jpg',
-          pitch: 0,
-          yaw: 0,
+          pitch: -16, yaw: 162,
           hotSpots: [
-            {
-              pitch: 0,
-              yaw: 180,     // placeholder — back toward stairs
-              type: 'scene',
-              sceneId: 'scene1',
-              text: 'Stairs',
-            },
-            {
-              pitch: 0,
-              yaw: 0,       // placeholder — through door 1 toward stage/scene 3
-              type: 'scene',
-              sceneId: 'scene3',
-              text: 'Enter ballroom',
-            },
-            {
-              pitch: 0,
-              yaw: 90,      // placeholder — through door 4 toward scene 4
-              type: 'scene',
-              sceneId: 'scene4',
-              text: 'Enter ballroom',
-            }
+            { pitch: -3,  yaw: 160,  type: 'scene', sceneId: 'scene1', text: 'Top of stairs' },
+            { pitch: -3,  yaw: -70,  type: 'scene', sceneId: 'scene5', text: 'Back of ballroom' },
+            { pitch: -12, yaw: -165, type: 'scene', sceneId: 'scene3', text: 'Stage & dancefloor' },
           ]
         },
 
-        // Scene 3 — Stage / dancefloor (bottom left of ballroom)
         scene3: {
           panorama: 'Conference Centre-3.jpg',
-          pitch: 0,
-          yaw: 0,
+          pitch: -17, yaw: 118,
           hotSpots: [
-            {
-              pitch: 0,
-              yaw: 180,     // placeholder — back out to foyer
-              type: 'scene',
-              sceneId: 'scene2',
-              text: 'Foyer',
-            },
-            {
-              pitch: 0,
-              yaw: 90,      // placeholder — into mid ballroom
-              type: 'scene',
-              sceneId: 'scene6',
-              text: 'Mid ballroom',
-            }
+            { pitch: -13, yaw: -169, type: 'scene', sceneId: 'scene2', text: 'Outside ballroom' },
+            { pitch: -7,  yaw: 146,  type: 'scene', sceneId: 'scene6', text: 'Mid ballroom' },
+            { pitch: -7,  yaw: 173,  type: 'scene', sceneId: 'scene4', text: 'Ballroom entrance side' },
+            { pitch: -2,  yaw: -93,  type: 'scene', sceneId: 'scene1', text: 'Top of stairs' },
           ]
         },
 
-        // Scene 4 — Bottom right of ballroom
         scene4: {
           panorama: 'Conference Centre-4.jpg',
-          pitch: 0,
-          yaw: 0,
+          pitch: -10, yaw: -71,
           hotSpots: [
-            {
-              pitch: 0,
-              yaw: 180,     // placeholder — back to foyer
-              type: 'scene',
-              sceneId: 'scene2',
-              text: 'Foyer',
-            },
-            {
-              pitch: 0,
-              yaw: 90,      // placeholder — toward mid ballroom
-              type: 'scene',
-              sceneId: 'scene6',
-              text: 'Mid ballroom',
-            },
-            {
-              pitch: 0,
-              yaw: 0,       // placeholder — toward back corner
-              type: 'scene',
-              sceneId: 'scene5',
-              text: 'Back of ballroom',
-            }
+            { pitch: -4,  yaw: -11,  type: 'scene', sceneId: 'scene5', text: 'Back of ballroom' },
+            { pitch: -5,  yaw: -69,  type: 'scene', sceneId: 'scene6', text: 'Mid ballroom' },
+            { pitch: -6,  yaw: -97,  type: 'scene', sceneId: 'scene3', text: 'Stage & dancefloor' },
+            { pitch: -11, yaw: -116, type: 'scene', sceneId: 'scene2', text: 'Outside ballroom' },
+            { pitch: -1,  yaw: -117, type: 'scene', sceneId: 'scene1', text: 'Top of stairs' },
           ]
         },
 
-        // Scene 5 — Back right corner of ballroom
         scene5: {
           panorama: 'Conference Centre-5.jpg',
-          pitch: 0,
-          yaw: 0,
+          pitch: -12, yaw: 131,
           hotSpots: [
-            {
-              pitch: 0,
-              yaw: 180,     // placeholder — back to mid ballroom
-              type: 'scene',
-              sceneId: 'scene6',
-              text: 'Mid ballroom',
-            },
-            {
-              pitch: 0,
-              yaw: 90,      // placeholder — toward scene 4
-              type: 'scene',
-              sceneId: 'scene4',
-              text: 'Ballroom entrance side',
-            }
+            { pitch: -11, yaw: 83,   type: 'scene', sceneId: 'scene4', text: 'Ballroom entrance side' },
+            { pitch: -7,  yaw: 145,  type: 'scene', sceneId: 'scene6', text: 'Mid ballroom' },
+            { pitch: -3,  yaw: 124,  type: 'scene', sceneId: 'scene2', text: 'Outside ballroom' },
           ]
         },
 
-        // Scene 6 — Mid ballroom (primary / default scene)
         scene6: {
           panorama: 'Conference Centre-6.jpg',
-          pitch: 0,
-          yaw: 0,
+          pitch: -19, yaw: 175,
           hotSpots: [
-            {
-              pitch: 0,
-              yaw: 180,     // placeholder — toward stage/dancefloor
-              type: 'scene',
-              sceneId: 'scene3',
-              text: 'Stage & dancefloor',
-            },
-            {
-              pitch: 0,
-              yaw: 90,      // placeholder — toward back right
-              type: 'scene',
-              sceneId: 'scene4',
-              text: 'Ballroom entrance side',
-            },
-            {
-              pitch: 0,
-              yaw: 0,       // placeholder — toward back corner
-              type: 'scene',
-              sceneId: 'scene5',
-              text: 'Back of ballroom',
-            }
+            { pitch: -6,  yaw: -31,  type: 'scene', sceneId: 'scene5', text: 'Back of ballroom' },
+            { pitch: -3,  yaw: 20,   type: 'scene', sceneId: 'scene4', text: 'Ballroom entrance side' },
+            { pitch: -12, yaw: 152,  type: 'scene', sceneId: 'scene3', text: 'Stage & dancefloor' },
+            { pitch: -5,  yaw: 97,   type: 'scene', sceneId: 'scene2', text: 'Outside ballroom' },
           ]
-        }
+        },
 
       }
     });
@@ -304,6 +173,5 @@
       }
     }, 5000);
   </script>
-
 </body>
 </html>
