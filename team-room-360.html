@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Room — 360° View</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
+  <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #3F3F3F; }
+    #viewer { width: 100%; height: 100%; }
+    #branding {
+      position: fixed; bottom: 15px; right: 15px; z-index: 100;
+      background: #3F3F3F; padding: 12px 16px; color: #FFFFFF;
+      font-family: "Roboto Bold", Arial, sans-serif; font-weight: 400;
+      pointer-events: none; border-radius: 0;
+    }
+    #branding strong { display: block; font-size: 16px; font-weight: 400; margin-bottom: 2px; }
+    #branding span { font-size: 13px; opacity: 0.65; font-family: "Roboto Regular", Arial, sans-serif; }
+    #hint {
+      position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
+      background: #3F3F3F; color: #FFFFFF; font-size: 13px; padding: 12px 16px;
+      pointer-events: none; z-index: 100; transition: opacity 1s;
+      font-family: "Roboto Regular", Arial, sans-serif; white-space: nowrap;
+      border-radius: 0; opacity: 0.85;
+    }
+    .pnlm-zoom-in, .pnlm-zoom-out, .pnlm-fullscreen-toggle-button {
+      background-color: #FFFFFF !important; border-radius: 0 !important;
+    }
+    .pnlm-zoom-in::before, .pnlm-zoom-out::before, .pnlm-fullscreen-toggle-button::before { color: #FFFFFF !important; }
+    .pnlm-zoom-in:hover, .pnlm-zoom-out:hover, .pnlm-fullscreen-toggle-button:hover {
+      background-color: #00B6EA !important; color: #FFFFFF !important;
+    }
+    .pnlm-load-button { background-color: #3F3F3F !important; border-radius: 0 !important; }
+    .pnlm-load-button p { background-color: #00B6EA !important; color: #FFFFFF !important; border-radius: 0 !important; }
+    .pnlm-load-button:hover p { background-color: #DE3D95 !important; }
+    .pnlm-hotspot.pnlm-scene {
+      background: transparent !important; border: none !important;
+      border-radius: 50% !important; width: 26px !important; height: 26px !important;
+      margin-left: -13px !important; margin-top: -13px !important; cursor: pointer !important;
+    }
+    .pnlm-hotspot.pnlm-scene::before {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%); width: 14px; height: 14px;
+      background: #00B6EA; border-radius: 50%; border: 2px solid #FFFFFF;
+      z-index: 2; transition: background 0.15s ease;
+    }
+    .pnlm-hotspot.pnlm-scene::after {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(1); width: 26px; height: 26px;
+      background: rgba(0, 182, 234, 0.4); border-radius: 50%;
+      animation: pulse 2s ease-out infinite; z-index: 1;
+    }
+    .pnlm-hotspot.pnlm-scene:hover::before { background: #DE3D95 !important; }
+    .pnlm-hotspot.pnlm-scene:hover::after { background: rgba(222, 61, 149, 0.4); }
+    @keyframes pulse {
+      0%   { transform: translate(-50%, -50%) scale(1);   opacity: 0.8; }
+      100% { transform: translate(-50%, -50%) scale(2.8); opacity: 0; }
+    }
+    .pnlm-tooltip span {
+      background: #3F3F3F; color: #FFFFFF;
+      font-family: "Roboto Regular", Arial, sans-serif;
+      font-size: 13px; padding: 6px 12px; border-radius: 0; white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div id="branding">
+    <strong>Team Room</strong>
+    <span>SilverStar Mountain Resort · 360° View</span>
+  </div>
+  <div id="hint">Click the markers to move through the space</div>
+  <div id="viewer"></div>
+  <script>
+    var isMobile = window.innerWidth < 768;
+    pannellum.viewer('viewer', {
+      default: {
+        firstScene: 'scene2',
+        sceneFadeDuration: 1000,
+        autoLoad: true,
+        showZoomCtrl: true,
+        showFullscreenCtrl: true,
+        mouseZoom: true,
+        minHfov: 50,
+        maxHfov: 120,
+        hfov: isMobile ? 100 : 120,
+        compass: false,
+      },
+      scenes: {
+        scene1: {
+          panorama: 'Team Room-1.jpg',
+          pitch: -20, yaw: 126,
+          hotSpots: [
+            { pitch: -1, yaw: 129,  type: 'scene', sceneId: 'scene3', text: 'Middle of room' },
+            { pitch: -1, yaw: -82,  type: 'scene', sceneId: 'scene2', text: 'Back left' },
+          ]
+        },
+        scene2: {
+          panorama: 'Team Room-2.jpg',
+          pitch: -14, yaw: 40,
+          hotSpots: [
+            { pitch: -1, yaw: 32,  type: 'scene', sceneId: 'scene3', text: 'Middle of room' },
+            { pitch: -1, yaw: 83,  type: 'scene', sceneId: 'scene1', text: 'Back right' },
+          ]
+        },
+        scene3: {
+          panorama: 'Team Room-3.jpg',
+          pitch: -5, yaw: -3,
+          hotSpots: [
+            { pitch: -5, yaw: 178,  type: 'scene', sceneId: 'scene2', text: 'Back left' },
+            { pitch: -5, yaw: -85,  type: 'scene', sceneId: 'scene1', text: 'Back right' },
+          ]
+        },
+      }
+    });
+    setTimeout(function() {
+      var hint = document.getElementById('hint');
+      if (hint) {
+        hint.style.opacity = '0';
+        setTimeout(function() { if (hint.parentNode) hint.parentNode.removeChild(hint); }, 1000);
+      }
+    }, 5000);
+  </script>
+</body>
+</html>
