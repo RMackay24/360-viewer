@@ -10,103 +10,60 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { width: 100%; height: 100%; background: #3F3F3F; font-family: Arial, sans-serif; display: flex; flex-direction: column; }
     #toolbar {
-      background: #3F3F3F;
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      flex-shrink: 0;
-      flex-wrap: wrap;
+      background: #3F3F3F; padding: 12px 16px;
+      display: flex; align-items: center; gap: 16px; flex-shrink: 0; flex-wrap: wrap;
     }
     #toolbar label { color: #fff; font-size: 13px; opacity: 0.65; }
-    #scene-select {
-      background: #fff;
-      color: #3F3F3F;
-      border: none;
-      padding: 8px 12px;
-      font-size: 14px;
-      border-radius: 0;
-      cursor: pointer;
+    #venue-select, #scene-select {
+      background: #fff; color: #3F3F3F; border: none;
+      padding: 8px 12px; font-size: 14px; border-radius: 0; cursor: pointer;
     }
     #coords {
-      background: #00B6EA;
-      color: #fff;
-      padding: 8px 16px;
-      font-size: 15px;
-      font-weight: bold;
-      letter-spacing: 0.03em;
-      min-width: 220px;
+      background: #00B6EA; color: #fff; padding: 8px 16px;
+      font-size: 15px; font-weight: bold; letter-spacing: 0.03em; min-width: 220px;
     }
     #copy-btn {
-      background: #DE3D95;
-      color: #fff;
-      border: none;
-      padding: 8px 16px;
-      font-size: 13px;
-      cursor: pointer;
+      background: #DE3D95; color: #fff; border: none;
+      padding: 8px 16px; font-size: 13px; cursor: pointer;
     }
     #copy-btn:hover { background: #c0307d; }
     #log {
-      background: #2a2a2a;
-      color: #EBEFF5;
-      font-size: 12px;
-      padding: 8px 16px;
-      min-height: 36px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      overflow-x: auto;
+      background: #2a2a2a; color: #EBEFF5; font-size: 12px;
+      padding: 8px 16px; min-height: 36px; flex-shrink: 0;
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap; overflow-x: auto;
     }
     .log-entry {
-      background: #3F3F3F;
-      padding: 3px 10px;
-      white-space: nowrap;
-      cursor: pointer;
-      border: 1px solid #555;
+      background: #3F3F3F; padding: 3px 10px; white-space: nowrap;
+      cursor: pointer; border: 1px solid #555;
     }
     .log-entry:hover { border-color: #00B6EA; }
     #viewer { flex: 1; }
     #instructions {
-      position: fixed;
-      top: 70px;
-      right: 16px;
-      background: #3F3F3F;
-      color: #fff;
-      font-size: 12px;
-      padding: 10px 14px;
-      line-height: 1.7;
-      opacity: 0.85;
-      pointer-events: none;
-      max-width: 220px;
+      position: fixed; top: 70px; right: 16px; background: #3F3F3F;
+      color: #fff; font-size: 12px; padding: 10px 14px;
+      line-height: 1.7; opacity: 0.85; pointer-events: none; max-width: 220px;
     }
   </style>
 </head>
 <body>
-
   <div id="toolbar">
-    <label>Scene:</label>
-    <select id="scene-select">
-      <option value="Conference Centre-1.jpg">Scene 1 — Top of stairs</option>
-      <option value="Conference Centre-2.jpg">Scene 2 — Outside ballroom</option>
-      <option value="Conference Centre-3.jpg">Scene 3 — Stage / dancefloor</option>
-      <option value="Conference Centre-4.jpg">Scene 4 — Bottom right ballroom</option>
-      <option value="Conference Centre-5.jpg">Scene 5 — Back right corner</option>
-      <option value="Conference Centre-6.jpg" selected>Scene 6 — Mid ballroom</option>
+    <label>Venue:</label>
+    <select id="venue-select">
+      <option value="natc">NATC Auditorium</option>
+      <option value="teamroom">Team Room</option>
+      <option value="conference">Conference Centre</option>
     </select>
+    <label>Scene:</label>
+    <select id="scene-select"></select>
     <div id="coords">Yaw: — &nbsp; Pitch: —</div>
     <button id="copy-btn">📋 Save this position</button>
   </div>
-
   <div id="log">
     <span style="opacity:0.5;">Saved positions will appear here — click to copy</span>
   </div>
-
   <div id="viewer"></div>
-
   <div id="instructions">
-    1. Pick a scene above<br>
+    1. Pick a venue &amp; scene<br>
     2. Drag to face where you want a hotspot<br>
     3. Read the Yaw &amp; Pitch<br>
     4. Click "Save this position"<br>
@@ -114,22 +71,62 @@
   </div>
 
   <script>
+    var venues = {
+      natc: {
+        label: 'NATC Auditorium',
+        scenes: [
+          { file: 'NATC-1.jpg', label: 'Scene 1 — Back right (viewer)' },
+          { file: 'NATC-2.jpg', label: 'Scene 2 — Back left (viewer)' },
+          { file: 'NATC-3.jpg', label: 'Scene 3 — Middle of auditorium' },
+          { file: 'NATC-4.jpg', label: 'Scene 4 — Front / stage' },
+        ]
+      },
+      teamroom: {
+        label: 'Team Room',
+        scenes: [
+          { file: 'Team Room-1.jpg', label: 'Scene 1 — Back right (viewer)' },
+          { file: 'Team Room-2.jpg', label: 'Scene 2 — Back left (viewer)' },
+          { file: 'Team Room-3.jpg', label: 'Scene 3 — Middle of room' },
+        ]
+      },
+      conference: {
+        label: 'Conference Centre',
+        scenes: [
+          { file: 'Conference Centre-1.jpg', label: 'Scene 1 — Top of stairs' },
+          { file: 'Conference Centre-2.jpg', label: 'Scene 2 — Outside ballroom' },
+          { file: 'Conference Centre-3.jpg', label: 'Scene 3 — Stage / dancefloor' },
+          { file: 'Conference Centre-4.jpg', label: 'Scene 4 — Bottom right ballroom' },
+          { file: 'Conference Centre-5.jpg', label: 'Scene 5 — Back right corner' },
+          { file: 'Conference Centre-6.jpg', label: 'Scene 6 — Mid ballroom' },
+        ]
+      }
+    };
+
     var viewer = null;
     var currentYaw = 0;
     var currentPitch = 0;
 
+    function populateScenes(venueKey) {
+      var sceneSelect = document.getElementById('scene-select');
+      sceneSelect.innerHTML = '';
+      venues[venueKey].scenes.forEach(function(s, i) {
+        var opt = document.createElement('option');
+        opt.value = s.file;
+        opt.textContent = s.label;
+        sceneSelect.appendChild(opt);
+      });
+      loadScene(venues[venueKey].scenes[0].file);
+    }
+
     function loadScene(panorama) {
-      if (viewer) {
-        viewer.destroy();
-        viewer = null;
-      }
-      document.getElementById('viewer').innerHTML = '';
+      if (viewer) { viewer.destroy(); viewer = null; }
+      var container = document.getElementById('viewer');
+      container.innerHTML = '';
       var div = document.createElement('div');
       div.id = 'pnlm-viewer';
       div.style.width = '100%';
       div.style.height = '100%';
-      document.getElementById('viewer').appendChild(div);
-
+      container.appendChild(div);
       viewer = pannellum.viewer('pnlm-viewer', {
         type: 'equirectangular',
         panorama: panorama,
@@ -139,9 +136,6 @@
         hfov: 120,
         compass: false,
       });
-
-      viewer.on('mouseup', updateCoords);
-      viewer.on('touchend', updateCoords);
       setInterval(updateCoords, 200);
     }
 
@@ -153,14 +147,19 @@
         'Yaw: ' + currentYaw + '°   Pitch: ' + currentPitch + '°';
     }
 
+    document.getElementById('venue-select').addEventListener('change', function() {
+      populateScenes(this.value);
+    });
+
     document.getElementById('scene-select').addEventListener('change', function() {
       loadScene(this.value);
     });
 
     document.getElementById('copy-btn').addEventListener('click', function() {
-      var sceneName = document.getElementById('scene-select').options[document.getElementById('scene-select').selectedIndex].text;
+      var sceneLabel = document.getElementById('scene-select').options[document.getElementById('scene-select').selectedIndex].text;
+      var venueLabel = document.getElementById('venue-select').options[document.getElementById('venue-select').selectedIndex].text;
       var entry = document.createElement('span');
-      var text = sceneName + ' → yaw: ' + currentYaw + ', pitch: ' + currentPitch;
+      var text = venueLabel + ' · ' + sceneLabel + ' → yaw: ' + currentYaw + ', pitch: ' + currentPitch;
       entry.className = 'log-entry';
       entry.textContent = text;
       entry.title = 'Click to copy';
@@ -175,9 +174,7 @@
       log.appendChild(entry);
     });
 
-    // Load default scene
-    loadScene('Conference Centre-6.jpg');
+    populateScenes('natc');
   </script>
-
 </body>
 </html>
